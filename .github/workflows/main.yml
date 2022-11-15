@@ -1,0 +1,43 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    if: "! contains(toJSON(github.event.commits.*.message), '[skip ci]')"
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - run: npm add -g @blocklet/cli
+      - run: yarn
+
+      - name: Publish Blocklet
+        uses: blocklet/action-workflow@v1
+        with:
+          skip-deps: false
+          skip-bundle: false
+          skip-upload: false
+          skip-deploy: true
+          skip-release: true
+          skip-readme: true
+          bundle-command: npm run bundle
+          store-endpoint: ${{ secrets.STORE_ENDPOINT_TEST }}
+          store-access-token: ${{ secrets.STORE_ACCESS_TOKEN_TEST }}
+
+      - name: Publish Package
+        run: |
+          npm config set '//registry.npmjs.org/:_authToken' "${{ secrets.NPM_TOKEN }}"
+          node publish.js
+          cd .package && npm publish

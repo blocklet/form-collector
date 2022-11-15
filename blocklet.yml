@@ -1,0 +1,44 @@
+name: form-collector
+title: Form Collector
+description: Form collector on top of formily
+group: static
+main: dist
+author:
+  name: wangshijun
+  email: shijun@arcblock.io
+specVersion: 1.2.7
+version: 0.1.0
+logo: logo.png
+files:
+  - README.md
+  - screenshots
+interfaces:
+  - type: web
+    name: publicUrl
+    path: /
+    prefix: '*'
+    port: BLOCKLET_PORT
+    protocol: http
+did: z8iZkQMJ1RTVeXbV9NtqCpfKExoVz378JbeYu
+community: ''
+documentation: ''
+homepage: ''
+license: ''
+payment:
+  price: []
+  share: []
+timeout:
+  start: 60
+requirements:
+  server: '>=1.7.0'
+  os: '*'
+  cpu: '*'
+environments: []
+capabilities:
+  clusterMode: false
+  component: true
+screenshots:
+  - editor.png
+components: []
+scripts:
+  dev: npm run dev
