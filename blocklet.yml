@@ -1,4 +1,4 @@
-name: form-collector
+name: form-collector-next
 title: Form Collector
 description: Form collector on top of formily
 group: static
@@ -19,7 +19,7 @@ interfaces:
     prefix: '*'
     port: BLOCKLET_PORT
     protocol: http
-did: z8iZkQMJ1RTVeXbV9NtqCpfKExoVz378JbeYu
+did: z8iZwiyipGhqptE8hvutwkJZKZDruFrcry3JH
 community: ''
 documentation: ''
 homepage: ''
