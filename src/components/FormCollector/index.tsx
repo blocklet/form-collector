@@ -4,7 +4,7 @@ import axios from 'axios';
 import useAsync from 'react-use/lib/useAsync';
 import { createForm } from '@formily/core';
 import { createSchemaField } from '@formily/react';
-import { Button, Rate, Slider, Alert, Spin, message } from 'antd';
+import { Row, Button, Rate, Slider, Alert, Spin, message } from 'antd';
 import {
   Form,
   Input,
@@ -31,7 +31,7 @@ import {
 } from '@formily/antd';
 import useSchemaKey from '../../hooks/useSchemaKey';
 
-const api = axios.create();
+const api = axios.create({ timeout: 8000 });
 const formatError = (err) => {
   if (Array.isArray(err.errors)) {
     return err.errors.map((x) => x.message).join('\n');
@@ -76,6 +76,12 @@ const SchemaField = createSchemaField({
   },
 });
 
+const Center = ({ children }) => (
+  <Row style={{ display: 'flex', height: '100vh' }} align="middle" justify="center">
+    {children}
+  </Row>
+);
+
 export default function FormCollector() {
   const schemaKey = useSchemaKey();
   const state = useAsync(async () => {
@@ -83,20 +89,32 @@ export default function FormCollector() {
       return null;
     }
 
-    const { data } = await api.get(schemaKey, { withCredentials: true });
+    const { data } = await api.get(schemaKey);
     return typeof data === 'object' ? data : {};
   });
 
   if (!schemaKey) {
-    return <Alert message="Error" description="Form Collector requires a schema url to work" type="error" />;
+    return (
+      <Center>
+        <Alert message="Oops" description="Form Collector requires a valid schemaKey to work" type="error" />
+      </Center>
+    );
   }
 
   if (state.loading) {
-    return <Spin size="large" />;
+    return (
+      <Center>
+        <Spin size="large" />
+      </Center>
+    );
   }
 
   if (state.error) {
-    return <Alert message="Oops" description={`Failed to load form schema: ${state.error.message}`} type="error" />;
+    return (
+      <Center>
+        <Alert message="Oops" description={`Failed to load form schema: ${state.error.message}`} type="error" />
+      </Center>
+    );
   }
 
   const config = state.value;
