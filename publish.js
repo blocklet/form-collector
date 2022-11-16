@@ -35,6 +35,7 @@ if (favIco) {
 }
 
 fs.writeFileSync(indexFile, dom.serialize());
+console.log('html entry generated');
 
 // prepare package.json
 fs.writeFileSync(
@@ -43,6 +44,7 @@ fs.writeFileSync(
     {
       name,
       version: blocklet.version,
+      main: 'index.js',
       publishConfig: {
         access: 'public',
       },
@@ -51,5 +53,10 @@ fs.writeFileSync(
     2
   )
 );
+console.log('npm package.json generated');
 
-console.log('npm package generated');
+fs.writeFileSync(
+  path.join(packagePath, 'index.js'),
+  'module.exports = {};'
+);
+console.log('npm index.js generated');
