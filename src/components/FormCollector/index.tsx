@@ -2,6 +2,7 @@ import 'antd/dist/antd.less';
 import React from 'react';
 import axios from 'axios';
 import useAsync from 'react-use/lib/useAsync';
+import useSearchParam from 'react-use/lib/useSearchParam';
 import { createForm } from '@formily/core';
 import { createSchemaField } from '@formily/react';
 import { Row, Button, Rate, Slider, Alert, Spin, message } from 'antd';
@@ -82,14 +83,28 @@ const Center = ({ children }) => (
   </Row>
 );
 
+const getAuthHeaders = (authKey) => {
+  const headers = {};
+  if (authKey) {
+    const authToken = window.localStorage.getItem(authKey);
+    if (authToken) {
+      headers.Authorization = `Bearer ${authToken}`;
+    }
+  }
+
+  return headers;
+};
+
 export default function FormCollector() {
   const schemaKey = useSchemaKey();
+  const authKey = useSearchParam('authKey') || '';
+
   const state = useAsync(async () => {
     if (!schemaKey) {
       return null;
     }
 
-    const { data } = await api.get(schemaKey);
+    const { data } = await api.get(schemaKey, { headers: getAuthHeaders(authKey) });
     return typeof data === 'object' ? data : {};
   });
 
@@ -120,11 +135,17 @@ export default function FormCollector() {
   const config = state.value;
   const onSubmit = async (data) => {
     try {
-      await api.post(schemaKey, data);
+      await api.post(schemaKey, data, { headers: getAuthHeaders(authKey) });
       message.success('Form data successfully submitted');
     } catch (err) {
       message.error(formatError(err));
     }
+
+    setTimeout(() => {
+      const parent = window.self;
+      parent.opener = window.self;
+      parent.close();
+    }, 1000);
   };
 
   return (
