@@ -1,6 +1,8 @@
 import 'antd/dist/antd.less';
 import React from 'react';
 import axios from 'axios';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 import useAsync from 'react-use/lib/useAsync';
 import useSearchParam from 'react-use/lib/useSearchParam';
 import { createForm } from '@formily/core';
@@ -133,6 +135,14 @@ export default function FormCollector() {
   }
 
   const config = state.value;
+  if (isEmpty(get(config, 'schema.properties'))) {
+    return (
+      <Center>
+        <Alert message="No customization available" type="info" showIcon />
+      </Center>
+    );
+  }
+
   const onSubmit = async (data) => {
     try {
       await api.post(schemaKey, data, { headers: getAuthHeaders(authKey) });
