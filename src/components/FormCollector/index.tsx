@@ -83,8 +83,8 @@ const Center = ({ children }) => (
   </Row>
 );
 
-const getAuthHeaders = (authKey) => {
-  const headers = {};
+const getAuthHeaders = (authKey: string) => {
+  const headers: any = {};
   if (authKey) {
     const authToken = window.localStorage.getItem(authKey);
     if (authToken) {
