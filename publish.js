@@ -21,14 +21,18 @@ const indexFile = path.join(packagePath, 'index.html');
 const source = fs.readFileSync(indexFile, 'utf8');
 const dom = new JSDOM(source);
 dom.window.document.querySelector('script')?.remove(); // remove blocklet.js
-const scriptTag = dom.window.document.querySelector('script');
-if (scriptTag) {
-  scriptTag.src = scriptTag.src.replace(`/.blocklet/proxy/${blocklet.did}`, '.');
-}
-const styleTag = dom.window.document.querySelector('link[rel="stylesheet"]');
-if (styleTag) {
-  styleTag.href = styleTag.href.replace(`/.blocklet/proxy/${blocklet.did}`, '.');
-}
+const scriptTags = dom.window.document.querySelectorAll('script');
+scriptTags.forEach((scriptTag) => {
+  if (scriptTag.src.startsWith('/.blocklet/')) {
+    scriptTag.src = scriptTag.src.replace(`/.blocklet/proxy/${blocklet.did}`, '.');
+  }
+});
+const styleTags = dom.window.document.querySelectorAll('link[rel="stylesheet"]');
+styleTags.forEach((styleTag) => {
+  if (styleTag.href.startsWith('/.blocklet/')) {
+    styleTag.href = styleTag.href.replace(`/.blocklet/proxy/${blocklet.did}`, '.');
+  }
+});
 const favIco = dom.window.document.querySelector('link[rel="icon"]');
 if (favIco) {
   favIco.href = `/${favIco.href}`;
