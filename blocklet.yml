@@ -6,8 +6,8 @@ main: dist
 author:
   name: wangshijun
   email: shijun@arcblock.io
-specVersion: 1.2.7
-version: 0.1.5
+specVersion: 1.2.8
+version: 0.1.6
 logo: logo.png
 files:
   - README.md
@@ -37,6 +37,7 @@ environments: []
 capabilities:
   clusterMode: false
   component: true
+  navigation: true
 screenshots:
   - editor.png
 components: []
