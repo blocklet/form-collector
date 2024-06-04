@@ -39,13 +39,13 @@ import {
 import useSchemaKey from '../../hooks/useSchemaKey';
 
 const Text: React.FC<{
-  value?: string
-  content?: string
-  mode?: "normal" | "h1" | "h2" | "h3" | "p"
+  value?: string;
+  content?: string;
+  mode?: 'normal' | 'h1' | 'h2' | 'h3' | 'p';
 }> = ({ value, mode, content, ...props }) => {
-  const tagName = mode === "normal" || !mode ? "div" : mode
-  return React.createElement(tagName, props, value || content)
-}
+  const tagName = mode === 'normal' || !mode ? 'div' : mode;
+  return React.createElement(tagName, props, value || content);
+};
 
 const api = axios.create({ timeout: 8000 });
 const formatError = (err) => {
@@ -179,7 +179,11 @@ export default function FormCollector() {
   return (
     <Form form={form} {...config.form} onAutoSubmit={onSubmit}>
       <SchemaField schema={config.schema} />
-      <div className="form-actions">
+      <div
+        className="form-actions"
+        style={{
+          marginTop: '16px',
+        }}>
         <Button htmlType="submit" type="primary">
           Save Changes
         </Button>
