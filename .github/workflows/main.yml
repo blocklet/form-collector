@@ -12,15 +12,15 @@ jobs:
     if: "! contains(toJSON(github.event.commits.*.message), '[skip ci]')"
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v4
         with:
-          node-version: '14'
+          node-version: '20'
+          cache: 'yarn'
 
-      - run: npm add -g @blocklet/cli
       - run: yarn
 
       - name: Publish Blocklet
@@ -32,7 +32,7 @@ jobs:
           skip-deploy: true
           skip-release: true
           skip-readme: true
-          bundle-command: npm run bundle
+          bundle-command: yarn bundle
           store-endpoint: ${{ secrets.STORE_ENDPOINT_DEV }}
           store-access-token: ${{ secrets.STORE_ACCESS_TOKEN_DEV }}
 
